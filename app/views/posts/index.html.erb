@@ -1,0 +1,11 @@
+<%= @posts %>
+<script type="application/json" id="bootstrapped_post_data">
+  <%= @posts.to_json.html_safe %>
+</script>
+
+<script type="application/javascript">
+$(function(){
+  var posts = JSON.parse($("#bootstrapped_post_data").html());
+  window.Journl.initialize($("body"),posts);
+});
+</script>

@@ -1,0 +1,10 @@
+<ul>
+  <% _(posts.models).each(function (post) { %>
+    <li class="post">
+      <a href="#/posts/<%= post.id %>">
+        <%= post.get("title") %>
+      </a>
+      <button data-id="<%= post.id %>" class="delButton">Delete</button>
+    </li>
+  <% }); %>
+</ul>
