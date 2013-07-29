@@ -7,6 +7,7 @@ Journl.Routers.PostsRouter = Backbone.Router.extend({
 
   routes: {
     "": "index",
+    "posts/new": "create",
     "posts/:id": "show"
   },
 
@@ -23,13 +24,21 @@ Journl.Routers.PostsRouter = Backbone.Router.extend({
   show: function(id) {
     var that = this;
 
-    console.log(id);
-
     var post = that.postsCollection.get(id);
     var postsShowView = new Journl.Views.PostsShowView({
       model: post
     })
 
     that.$rootEl.html(postsShowView.render().$el);
+  },
+
+  create: function(){
+    var that = this;
+
+    var postsCreateView = new Journl.Views.PostsCreateView({
+      collection: that.postsCollection
+    });
+
+    that.$rootEl.html(postsCreateView.render().$el);
   }
 })
