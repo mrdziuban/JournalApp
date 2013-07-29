@@ -3,11 +3,21 @@ window.Journl = {
   Collections: {},
   Views: {},
   Routers: {},
-  initialize: function($rootEl,postsData) {
-    var posts = postsData;
+  initialize: function($sidebar,$content,postsData) {
     var postCollection = new Journl.Collections.Posts(postsData)
-    new Journl.Routers.PostsRouter($rootEl,postCollection);
+    this.installSidebar($sidebar, postCollection);
+    new Journl.Routers.PostsRouter($content, postCollection);
     Backbone.history.start();
+  },
+
+  installSidebar: function ($sidebar, posts) {
+    var that = this;
+
+    var postsIndexView = new Journl.Views.PostsIndexView({
+      collection: posts
+    });
+
+    $sidebar.html(postsIndexView.render().$el);
   }
 };
 

@@ -3,48 +3,35 @@ Journl.Views.PostsCreateView = Backbone.View.extend({
     "click button.submit": "submit"
   },
 
+  initialize: function () {
+    this.modelAttrs = _.clone(this.model.attributes);
+  },
+
   submit: function() {
     var that = this;
     var title = $("input[name=post\\[title\\]]").val();
     var body = $("textarea[name=post\\[body\\]]").val();
+    var post = that.model.set({title: title, body: body});
 
-    if (that.model) {
-      var post = that.model.set({title: title, body: body})
+    if (!that.model.isNew()) {
       post.save({title: title, body: body},{success: function(){
         Backbone.history.navigate("#/");
       },
       error: function() {
-        var postsCreateView = new Journl.Views.PostsCreateView({
-          collection: that.collection,
-          model: that.model
-        });
-
-        that.$("body").html(postsCreateView.render().$el);
-
+          that.model.set(that.modelAttrs);
+          that.render();
         }
       });
     } else {
-      var post = new Journl.Models.Post({
-        title: title,
-        body: body
-      });
-      that.collection.create(post, {wait: true,
-        success: function() {
+        post.save({title: title, body: body},{success: function(){
           Backbone.history.navigate("#/");
+          that.collection.add(post);
         },
         error: function() {
-        var postsCreateView = new Journl.Views.PostsCreateView({
-          collection: that.collection
+            that.render();
+          }
         });
-
-        that.$("body").html(postsCreateView.render().$el);
-
-        }
-      });
-      that.collection.add(post);
     }
-
-
   },
 
   render: function() {

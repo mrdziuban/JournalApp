@@ -15,11 +15,12 @@ Journl.Routers.PostsRouter = Backbone.Router.extend({
   index: function() {
     var that = this;
 
-    var postsIndexView = new Journl.Views.PostsIndexView({
-      collection: that.posts
-    });
+    // var postsIndexView = new Journl.Views.PostsIndexView({
+    //   collection: that.posts
+    // });
 
-    that.$rootEl.html(postsIndexView.render().$el)
+    that.$rootEl.empty();
+    // that.$rootEl.html(postsIndexView.render().$el)
   },
 
   show: function(id) {
@@ -37,7 +38,8 @@ Journl.Routers.PostsRouter = Backbone.Router.extend({
     var that = this;
 
     var postsCreateView = new Journl.Views.PostsCreateView({
-      collection: that.posts
+      collection: that.posts,
+      model: new Journl.Models.Post
     });
 
     that.$rootEl.html(postsCreateView.render().$el);
