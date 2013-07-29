@@ -1,4 +1,10 @@
 <h1>New Post</h1>
-Title: <input type="text" name="post[title]"><br>
-Body: <textarea name="post[body]"></textarea><br>
-<button class="submit">New Post</button>
+Title: <input type="text" name="post[title]"
+<% if (typeof model !== "undefined"){ %>
+value="<%= model.escape('title') %>"
+<% } %>
+
+><br>
+Body: <textarea name="post[body]">
+<% if (typeof model !== "undefined"){ %><%= model.escape('body') %><% } %></textarea><br>
+<button class="submit">Post</button>

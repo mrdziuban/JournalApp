@@ -2,20 +2,21 @@ Journl.Routers.PostsRouter = Backbone.Router.extend({
 
   initialize: function($rootEl,postsCollection) {
     this.$rootEl = $rootEl;
-    this.postsCollection = postsCollection;
+    this.posts = postsCollection;
   },
 
   routes: {
     "": "index",
-    "posts/new": "create",
-    "posts/:id": "show"
+    "new": "create",
+    "posts/:id": "show",
+    "edit/:id": "edit"
   },
 
   index: function() {
     var that = this;
 
     var postsIndexView = new Journl.Views.PostsIndexView({
-      postsCollection: that.postsCollection
+      collection: that.posts
     });
 
     that.$rootEl.html(postsIndexView.render().$el)
@@ -24,7 +25,7 @@ Journl.Routers.PostsRouter = Backbone.Router.extend({
   show: function(id) {
     var that = this;
 
-    var post = that.postsCollection.get(id);
+    var post = that.posts.get(id)
     var postsShowView = new Journl.Views.PostsShowView({
       model: post
     })
@@ -36,7 +37,18 @@ Journl.Routers.PostsRouter = Backbone.Router.extend({
     var that = this;
 
     var postsCreateView = new Journl.Views.PostsCreateView({
-      collection: that.postsCollection
+      collection: that.posts
+    });
+
+    that.$rootEl.html(postsCreateView.render().$el);
+  },
+
+  edit: function(id) {
+    var that = this;
+
+    var postsCreateView = new Journl.Views.PostsCreateView({
+      collection: that.posts,
+      model: that.posts.get(id)
     });
 
     that.$rootEl.html(postsCreateView.render().$el);

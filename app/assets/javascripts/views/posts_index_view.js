@@ -1,21 +1,19 @@
 Journl.Views.PostsIndexView = Backbone.View.extend({
-  initialize: function (postsObj) {
+  initialize: function () {
     var that = this;
     var renderCallback = that.render.bind(that);
-    that.postsObj = postsObj;
-    // var collection = new Journl.Collections.Posts(that.collection);
 
-    that.listenTo(postsObj.postsCollection, "remove", renderCallback);
-    that.listenTo(postsObj.postsCollection, "add", renderCallback);
-    that.listenTo(postsObj.postsCollection, "change:title", renderCallback);
-    that.listenTo(postsObj.postsCollection, "reset", renderCallback);
+    that.listenTo(that.collection, "remove", renderCallback);
+    that.listenTo(that.collection, "add", renderCallback);
+    that.listenTo(that.collection, "change:title", renderCallback);
+    that.listenTo(that.collection, "reset", renderCallback);
   },
 
   render: function () {
     var that = this;
 
     var renderedContent = JST["posts/index"]({
-      posts: that.postsObj.postsCollection
+      posts: that.collection
     });
 
     that.$el.html(renderedContent);
@@ -26,12 +24,9 @@ Journl.Views.PostsIndexView = Backbone.View.extend({
     "click button.delButton": "delete"
   },
 
-  delete: function() {
+  delete: function(e) {
     var that = this;
-    var id = that.$(".delButton").data("id");
-
-    // var collection = new Journl.Collections.Posts(that.collection);
-    var post = that.postsObj.postsCollection.get(id);
+    var post = that.collection.get(e.toElement.id);
     post.destroy();
   }
 });
